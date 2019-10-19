@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using GSearch.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -33,6 +34,7 @@ namespace GSearch.Api
         public void ConfigureContainer(ContainerBuilder builder)
         {
             Console.WriteLine("123");
+            builder.RegisterType<SearchServices>().As<ISearchServices>().InstancePerLifetimeScope();
  
             //builder.RegisterModule(new AutofacModule());
         }

@@ -1,3 +1,4 @@
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
@@ -42,12 +43,12 @@ namespace GSearch.Api
         }
 
         public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args).
-            UseSerilog().
-            ConfigureWebHostDefaults(webBuilder =>
+            Host.CreateDefaultBuilder(args)
+            .UseServiceProviderFactory(new AutofacServiceProviderFactory())
+            .UseSerilog()
+            .ConfigureWebHostDefaults(webBuilder =>
             {
-
-                webBuilder.UseStartup<Startup>().UseConfiguration(Configuration);
+                webBuilder.UseConfiguration(Configuration).UseStartup<Startup>();
             });
     }
 }

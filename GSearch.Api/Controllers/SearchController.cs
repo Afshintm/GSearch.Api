@@ -13,36 +13,14 @@ namespace GSearch.Api.Controllers
         }
         // GET: api/Search
         [HttpGet]
-        public string Get(string keywords,string url)
+        public IActionResult Get([FromQuery]string keywords,[FromQuery]string url)
         {
-            
-            var result = _searchServices.Search("www.infotrack.com", "title search australia");
-            return result;
+            if (string.IsNullOrEmpty(keywords) || string.IsNullOrEmpty(url))
+                return BadRequest("Request should be in /search?keywords=Some keywords&url=Target url");
+            //var result = _searchServices.Search("www.infotrack.com", "title search australia");
+            var result = _searchServices.Search(url, keywords);
+            return Ok(result);
         }
 
-        // GET: api/Search/5
-        [HttpGet("{id}", Name = "Get")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST: api/Search
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        // PUT: api/Search/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
-
-        // DELETE: api/ApiWithActions/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
     }
 }

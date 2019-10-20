@@ -1,9 +1,12 @@
 using System;
+using System.IO;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using GSearch.Services;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -31,11 +34,6 @@ namespace GSearch.Api
                 c.BaseAddress = new Uri("https://www.google.com.au/search");
             });
 
-            //var builder = new ContainerBuilder();
-
-            //// Read service collection to Autofac
-            //builder.Populate(services);
-
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -54,6 +52,37 @@ namespace GSearch.Api
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
+            }
+            else
+            {
+                app.UseExceptionHandler(errorApp =>
+                {
+                    errorApp.Run(async context =>
+                    {
+                        context.Response.StatusCode = 500;
+                        context.Response.ContentType = "text/html";
+
+                        await context.Response.WriteAsync("<html lang=\"en\"><body>\r\n");
+                        await context.Response.WriteAsync("ERROR!<br><br>\r\n");
+
+                        var exceptionHandlerPathFeature =
+                            context.Features.Get<IExceptionHandlerPathFeature>();
+
+                        // Use exceptionHandlerPathFeature to process the exception (for example, 
+                        // logging), but do NOT expose sensitive error information directly to 
+                        // the client.
+                        logger.LogError(exceptionHandlerPathFeature.Error, "Error in request:");
+
+                        if (exceptionHandlerPathFeature?.Error is FileNotFoundException)
+                        {
+                            await context.Response.WriteAsync("File error thrown!<br><br>\r\n");
+                        }
+
+                        await context.Response.WriteAsync("<a href=\"/\">Home</a><br>\r\n");
+                        await context.Response.WriteAsync("</body></html>\r\n");
+                        await context.Response.WriteAsync(new string(' ', 512)); // IE padding
+                    });
+                });
             }
             logger.LogInformation("config...");
             app.UseRouting();

@@ -32,6 +32,7 @@ namespace GSearch.Api
             
             services.AddHttpClient<GoogleSearch>(c=> {
                 c.BaseAddress = new Uri("https://www.google.com.au/search");
+                
             });
 
         }

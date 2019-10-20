@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using GSearch.Services;
+﻿using GSearch.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GSearch.Api.Controllers
@@ -14,9 +13,9 @@ namespace GSearch.Api.Controllers
         }
         // GET: api/Search
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            var result = _searchServices.Search("www.infotrack.com", new string[] { "online", "title", "search" });
+            var result = _searchServices.Search("www.infotrack.com", "title search australia");
             return result;
         }
 

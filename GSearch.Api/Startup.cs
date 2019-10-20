@@ -1,14 +1,9 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Threading.Tasks;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using GSearch.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -33,13 +28,13 @@ namespace GSearch.Api
             services.AddOptions().AddControllers();
             
             services.AddHttpClient<GoogleSearch>(c=> {
-                c.BaseAddress = new Uri("http://www.google.com.au/search");
+                c.BaseAddress = new Uri("https://www.google.com.au/search");
             });
 
-            var builder = new ContainerBuilder();
+            //var builder = new ContainerBuilder();
 
-            // Read service collection to Autofac
-            builder.Populate(services);
+            //// Read service collection to Autofac
+            //builder.Populate(services);
 
         }
 
@@ -47,7 +42,6 @@ namespace GSearch.Api
         {
             Log.Information("inside Configure Container");
             builder.RegisterType<SearchServices>().As<ISearchServices>().InstancePerLifetimeScope();
-            //builder.RegisterType<GoogleSearch>().As<IGoogleSearch>().InstancePerLifetimeScope();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

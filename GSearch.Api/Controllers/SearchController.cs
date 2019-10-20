@@ -13,8 +13,9 @@ namespace GSearch.Api.Controllers
         }
         // GET: api/Search
         [HttpGet]
-        public string Get()
+        public string Get(string keywords,string url)
         {
+            
             var result = _searchServices.Search("www.infotrack.com", "title search australia");
             return result;
         }

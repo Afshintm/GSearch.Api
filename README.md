@@ -17,8 +17,8 @@ Webapi has got 3 projects.
 
 ### Api Endpoints: ###
 
-Get request to search some keywords in google and count the target url position in the result: `http://localhost:53132/search/v1?keywords=online%20title%20search&url=www.infotrack.com.au`
-Get request and specify the maximum 50 result in search and keywords as well as target url: `http://localhost:53132/search/v1?keywords=online%20title%20search&url=www.infotrack.com.au&num=50`
+Get request to search some keywords in google and count the target url position in the result: `http://localhost:53132/search?keywords=online%20title%20search&url=www.infotrack.com.au`
+Get request and specify the maximum 50 result in search and keywords as well as target url: `http://localhost:53132/search?keywords=online%20title%20search&url=www.infotrack.com.au&num=50`
 
 ### Technical spec ###
 

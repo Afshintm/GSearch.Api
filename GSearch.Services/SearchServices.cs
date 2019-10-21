@@ -23,7 +23,7 @@ namespace GSearch.Services
             _configuration = configuration;
             _googleSearch = googlesearch;
             _logger = logger;
-            DivSearchResultRegexPattern = _configuration.GetSection("SearchResultHtmlDivRegex").GetValue<string>("google") ?? divSearchResultRegexPatternDefault;
+            DivSearchResultRegexPattern = _configuration.GetSection("SearchResultHtmlDivRegex")["google"] ?? divSearchResultRegexPatternDefault;
 
         }
         public string Search(string url, string keywords, int numberofResult = 0)

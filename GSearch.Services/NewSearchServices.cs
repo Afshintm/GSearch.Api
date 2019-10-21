@@ -4,40 +4,39 @@ using System.Collections.Generic;
 using System.Text;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
 
 namespace GSearch.Services
 {
    
     public class NewSearchServices : ISearchServices
     {
-        public const string divSearchResultRegexPattern = @"<div class=""ZINbbc xpd O9g5cc uUPGi"">";
+        public const string divSearchResultRegexPatternDefault = @"<div class=""ZINbbc xpd O9g5cc uUPGi"">";
+        public string DivSearchResultRegexPattern { get; private set; }
+
         private NewGoogleSearch _googleSearch;
         private ILogger<NewSearchServices> _logger;
-        public NewSearchServices(NewGoogleSearch googlesearch, ILogger<NewSearchServices> logger)
+        private IConfiguration _configuration;
+        public NewSearchServices(NewGoogleSearch googlesearch, ILogger<NewSearchServices> logger,IConfiguration configuration)
         {
-
+            _configuration = configuration;
             _googleSearch = googlesearch;
             _logger = logger;
+            DivSearchResultRegexPattern = _configuration.GetSection("SearchResultHtmlDivRegex").GetValue<string>("google") ?? divSearchResultRegexPatternDefault;
+
         }
-        //private void SetParams(string keywords, int numberofResult)
-        //{
-        //    _googleSearch.SearchQuery = keywords;
-        //    _googleSearch.NumberOfResult = numberofResult;
-        //}
         public string Search(string url, string keywords, int numberofResult = 0)
         {
             var result = string.Empty;
             try
             {
-                //SetParams(keywords, numberofResult);
                 var searchresult = _googleSearch.Search(keywords, numberofResult).Result;
 
-                var positions = searchresult.SplitIndexOf(divSearchResultRegexPattern, url);
+                var positions = searchresult.SplitIndexOf(DivSearchResultRegexPattern, url);
 
                 if (positions.Any())
                 {
                     result = string.Join(",", positions.Select(i => i.ToString()));
-
                 }
                 else
                     result = "0";
@@ -55,10 +54,9 @@ namespace GSearch.Services
             var result = string.Empty;
             try
             {
-                //SetParams(keywords, numberofResult);
                 var searchresult = await _googleSearch.Search(keywords, numberofResult);
 
-                var positions = searchresult.SplitIndexOf(divSearchResultRegexPattern, url);
+                var positions = searchresult.SplitIndexOf(DivSearchResultRegexPattern, url);
 
                 if (positions.Any())
                 {

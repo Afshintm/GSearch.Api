@@ -11,7 +11,9 @@ Webapi has got 3 projects.
 
 
 1- Business Services Layer
+
 2- Web APi layer
+
 3- Unit testing -  for Business Services unit testing
 
 
@@ -20,10 +22,16 @@ Webapi has got 3 projects.
 Get request to search some keywords in google and count the target url position in the result: `http://localhost:53132/search?keywords=online%20title%20search&url=www.infotrack.com.au`
 Get request and specify the maximum 50 result in search and keywords as well as target url: `http://localhost:53132/search?keywords=online%20title%20search&url=www.infotrack.com.au&num=50`
 
+### Using Generic classes to add Bing search as a bonus point ###
+The generic class GenericSearchServices<T> give us an option to use different search engine like bing. 
+This means that the route ~/bing/search will do the search using Bing website. The full route is `http://localhost:53132/bing/search?keywords=online%20title%20search&url=www.infotrack.com.au`
+
 ### Technical spec ###
 
 In this project, microsoft recommended approach of using HttpClient and HttpClientFactory has been followed.
 Autofac is used for DI and for Unit tests Mock and a Fake implementation of HttpMessageHandler. 
+
+
 
 
 

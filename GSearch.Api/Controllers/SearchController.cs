@@ -19,7 +19,7 @@ namespace GSearch.Api.Controllers
         {
             if (string.IsNullOrEmpty(keywords) || string.IsNullOrEmpty(url))
                 return BadRequest("Request should be in /search?keywords=Some keywords&url=Target url");
-            var result = _searchServices.Search_v1(url, keywords, num);
+            var result = _searchServices.SearchAsync(url, keywords, num);
             return Ok(await result);
         }
 
@@ -33,6 +33,12 @@ namespace GSearch.Api.Controllers
             var result = _searchServices.Search(url, keywords, num);
             return Ok(result);
         }
-
+        // GET: Search/v1
+        [HttpGet]
+        [Route("health")]
+        public IActionResult Get()
+        {
+            return Ok("Api is healthy");
+        }
     }
 }

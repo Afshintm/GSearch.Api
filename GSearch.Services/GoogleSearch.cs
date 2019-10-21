@@ -23,7 +23,7 @@ namespace GSearch.Services
             var result = await response.Content.ReadAsStringAsync();
             return result;
         }
-        public async Task<string> Search_v1(string keywords, int numberOfResult = 0)
+        public async Task<string> SearchAsync(string keywords, int numberOfResult = 0)
         {
             if (string.IsNullOrEmpty(keywords))
                 throw new ApplicationException("Search kewords cannot be null");

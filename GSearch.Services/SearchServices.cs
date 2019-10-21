@@ -8,7 +8,7 @@ namespace GSearch.Services
 {
     public interface ISearchServices {
         string Search(string url, string keywords, int numberofResult = 0);
-        Task<string> Search_v1(string url, string keywords, int numberofResult = 0);
+        Task<string> SearchAsync(string url, string keywords, int numberofResult = 0);
     }
     public class SearchServices : ISearchServices
     {
@@ -24,7 +24,6 @@ namespace GSearch.Services
             _googleSearch = googlesearch;
             _logger = logger;
             DivSearchResultRegexPattern = _configuration.GetSection("SearchResultHtmlDivRegex")["google"] ?? divSearchResultRegexPatternDefault;
-
         }
         public string Search(string url, string keywords, int numberofResult = 0)
         {
@@ -50,12 +49,12 @@ namespace GSearch.Services
 
             return result;
         }
-        public async Task<string> Search_v1(string url, string keywords, int numberofResult = 0)
+        public async Task<string> SearchAsync(string url, string keywords, int numberofResult = 0)
         {
             var result = string.Empty;
             try
             {
-                var searchresult = await _googleSearch.Search(keywords, numberofResult);
+                var searchresult = await _googleSearch.SearchAsync(keywords, numberofResult);
 
                 var positions = searchresult.SplitIndexOf(DivSearchResultRegexPattern, url);
 
@@ -71,7 +70,6 @@ namespace GSearch.Services
                 _logger.LogError(ex.Message);
                 throw;
             }
-
             return result;
         }
 

@@ -38,7 +38,7 @@ namespace GSearch.Services.UnitTests
         [Fact]
         public void TestGoogleSearchReturnsTheHtml()
         {
-            var result = Task.Run(async () => await GoogleSearch.Search_v1("online title search")).Result;
+            var result = Task.Run(async () => await GoogleSearch.SearchAsync("online title search")).Result;
             Assert.NotNull(result);
         }
         [Fact]
@@ -49,7 +49,7 @@ namespace GSearch.Services.UnitTests
             mockConfiguration.Setup(x => x.GetSection(It.IsAny<string>())[It.IsAny<string>()]).Returns(@"<div class=""ZINbbc xpd O9g5cc uUPGi"">");
 
             var searchServices = new SearchServices(GoogleSearch, mockLogger.Object, mockConfiguration.Object);
-            var result = await searchServices.Search_v1("www.infotrack.com.au", "online title search");
+            var result = await searchServices.SearchAsync("www.infotrack.com.au", "online title search");
             Assert.NotNull(result);
             Assert.DoesNotContain("0", result);
             

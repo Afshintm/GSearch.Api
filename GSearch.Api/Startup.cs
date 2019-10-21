@@ -38,6 +38,10 @@ namespace GSearch.Api
             {
                 c.BaseAddress = new Uri("https://www.bing.com/search");
             });
+            services.AddHttpClient<GoogleSearchEngine>((s, c) =>
+            {
+                c.BaseAddress = new Uri("https://www.google.com.au/search");
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
@@ -49,7 +53,10 @@ namespace GSearch.Api
 
             builder.RegisterGeneric(typeof(GenericSearchServices<>)).As(typeof(IGenericSearchServices<>)).InstancePerLifetimeScope();
 
+            builder.RegisterType<GoogleSearchEngine>().As<IGoogleSearchEngine>().InstancePerLifetimeScope();
+
             builder.RegisterType<BingSearchEngine>().As<IBingSearchEngine>().InstancePerLifetimeScope();
+
 
         }
 

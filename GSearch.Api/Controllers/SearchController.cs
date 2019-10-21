@@ -10,9 +10,11 @@ namespace GSearch.Api.Controllers
     {
         private readonly ISearchServices _searchServices;
         private readonly IGenericSearchServices<BingSearchEngine> _bingSearchServices;
-        public SearchController(ISearchServices searchServices, IGenericSearchServices<BingSearchEngine> bingSearchServices) {
+        IGenericSearchServices<GoogleSearchEngine> _googleSearchServices;
+        public SearchController(ISearchServices searchServices, IGenericSearchServices<BingSearchEngine> bingSearchServices, IGenericSearchServices<GoogleSearchEngine> googleSearchServices) {
             _searchServices = searchServices;
             _bingSearchServices = bingSearchServices;
+            _googleSearchServices = googleSearchServices;
         }
         
         // GET: Search
@@ -43,6 +45,16 @@ namespace GSearch.Api.Controllers
             return Ok("Api is healthy");
         }
 
+        // GET: Search
+        [HttpGet]
+        [Route("v2")]
+        public async Task<IActionResult> GetGoogleAsync([FromQuery]string keywords, [FromQuery]string url, [FromQuery]int num = 0)
+        {
+            if (string.IsNullOrEmpty(keywords) || string.IsNullOrEmpty(url))
+                return BadRequest("Request should be in /search/v2?keywords=Some keywords&url=Target url");
+            var result = _googleSearchServices.SearchAsync(url, keywords, num);
+            return Ok(await result);
+        }
 
         // GET: Search
         [Route("~/bing/search")]

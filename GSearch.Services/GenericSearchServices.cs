@@ -1,37 +1,40 @@
-﻿
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace GSearch.Services
 {
-    public interface ISearchServices {
-        string Search(string url, string keywords, int numberofResult = 0);
-        Task<string> SearchAsync(string url, string keywords, int numberofResult = 0);
+    public interface IGenericSearchServices<T>: ISearchServices
+    {
+        T SearchEngin { get; set; }
+        ///string DivSearchResultRegexPattern { get; set; }
 
     }
-    public class SearchServices : ISearchServices
+    public class GenericSearchServices<T> : IGenericSearchServices<T> where T: IBaseSearchEngine 
     {
-        public const string divSearchResultRegexPatternDefault = @"<div class=""ZINbbc xpd O9g5cc uUPGi"">";
-        public string DivSearchResultRegexPattern { get; private set; }
+        public T SearchEngin { get; set; }
+        public IConfiguration Configuration { get; set; }
+        public ILogger<GenericSearchServices<T>> Logger { get; set; }
+        public string DivSearchResultRegexPattern { get; set; }
 
-        private GoogleSearch _googleSearch;
-        private ILogger<SearchServices> _logger;
-        private IConfiguration _configuration;
-        public SearchServices(GoogleSearch googlesearch, ILogger<SearchServices> logger, IConfiguration configuration)
+        public GenericSearchServices(T searchEngin, ILogger<GenericSearchServices<T>> logger, IConfiguration configuration)
         {
-            _configuration = configuration;
-            _googleSearch = googlesearch;
-            _logger = logger;
-            DivSearchResultRegexPattern = _configuration.GetSection("SearchResultHtmlDivRegex")["google"] ?? divSearchResultRegexPatternDefault;
+            SearchEngin = searchEngin;
+            Configuration = configuration;
+            Logger = logger;
+            var TName = typeof(T).Name;
+            DivSearchResultRegexPattern = Configuration.GetSection("SearchResultHtmlDivRegex")[TName]; 
         }
+
         public string Search(string url, string keywords, int numberofResult = 0)
         {
             var result = string.Empty;
             try
             {
-                var searchresult = _googleSearch.Search(keywords, numberofResult).Result;
+                var searchresult = SearchEngin.Search(keywords, numberofResult).Result;
 
                 var positions = searchresult.SplitIndexOf(DivSearchResultRegexPattern, url);
 
@@ -44,7 +47,7 @@ namespace GSearch.Services
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex.Message);
+                Logger.LogError(ex.Message);
                 throw;
             }
 
@@ -55,7 +58,7 @@ namespace GSearch.Services
             var result = string.Empty;
             try
             {
-                var searchresult = await _googleSearch.SearchAsync(keywords, numberofResult);
+                var searchresult = await SearchEngin.SearchAsync(keywords, numberofResult);
 
                 var positions = searchresult.SplitIndexOf(DivSearchResultRegexPattern, url);
 
@@ -68,12 +71,12 @@ namespace GSearch.Services
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex.Message);
+                Logger.LogError(ex.Message);
                 throw;
             }
             return result;
         }
 
+        
     }
-
 }

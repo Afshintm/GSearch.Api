@@ -5,7 +5,9 @@ VisualStudioVersion = 16.0.29411.108
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSearch.Api", "GSearch.Api\GSearch.Api.csproj", "{463F5A2C-C483-4655-8287-A0C998D8813C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSearch.Services", "GSearch.Services\GSearch.Services.csproj", "{354C79BE-2EBD-4117-AB57-E600B21BF157}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GSearch.Services", "GSearch.Services\GSearch.Services.csproj", "{354C79BE-2EBD-4117-AB57-E600B21BF157}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GSearch.Services.UnitTests", "GSearch.Services.UnitTests\GSearch.Services.UnitTests.csproj", "{175EE152-AD72-4C08-B93C-F44A0AB33298}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{354C79BE-2EBD-4117-AB57-E600B21BF157}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{354C79BE-2EBD-4117-AB57-E600B21BF157}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{354C79BE-2EBD-4117-AB57-E600B21BF157}.Release|Any CPU.Build.0 = Release|Any CPU
+		{175EE152-AD72-4C08-B93C-F44A0AB33298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{175EE152-AD72-4C08-B93C-F44A0AB33298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{175EE152-AD72-4C08-B93C-F44A0AB33298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{175EE152-AD72-4C08-B93C-F44A0AB33298}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

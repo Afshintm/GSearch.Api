@@ -32,15 +32,18 @@ namespace GSearch.Api
             
             services.AddHttpClient<GoogleSearch>(c=> {
                 c.BaseAddress = new Uri("https://www.google.com.au/search");
-                
+               
             });
-
+            services.AddHttpClient<NewGoogleSearch>((s, c) =>
+            {
+                c.BaseAddress = new Uri("https://www.google.com.au/search");
+            });
         }
 
         public void ConfigureContainer(ContainerBuilder builder)
         {
             Log.Information("inside Configure Container");
-            builder.RegisterType<SearchServices>().As<ISearchServices>().InstancePerLifetimeScope();
+            builder.RegisterType<NewSearchServices>().As<ISearchServices>().InstancePerLifetimeScope();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
